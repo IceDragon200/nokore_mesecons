@@ -280,7 +280,8 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	after_place_node = piston_orientate,
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules,
@@ -310,7 +311,8 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 	after_dig_node = piston_after_dig,
 	node_box = piston_on_box,
 	selection_box = piston_on_box,
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules,
@@ -340,7 +342,8 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 	node_box = piston_pusher_box,
 	on_rotate = piston_rotate_pusher,
 	drop = "",
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 })
 
 -- Sticky ones
@@ -359,7 +362,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	after_place_node = piston_orientate,
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules,
@@ -389,7 +393,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	after_dig_node = piston_after_dig,
 	node_box = piston_on_box,
 	selection_box = piston_on_box,
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules,
@@ -419,7 +424,8 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 	node_box = piston_pusher_box,
 	on_rotate = piston_rotate_pusher,
 	drop = "",
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 })
 
 

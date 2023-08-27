@@ -191,7 +191,8 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	after_place_node = after_place,
 	on_receive_fields = receive_fields,
 	can_dig = can_dig,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	mesecons = {effector = {
 		action_on = commandblock_action_on
 	}},
@@ -208,7 +209,8 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	after_place_node = after_place,
 	on_receive_fields = receive_fields,
 	can_dig = can_dig,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	mesecons = {effector = {
 		action_off = commandblock_action_off
 	}},

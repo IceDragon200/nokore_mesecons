@@ -25,7 +25,8 @@ minetest.register_node("mesecons_hydroturbine:hydro_turbine_off", {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, 1.5, 0.5 },
 	},
-	sounds = mesecon.node_sound.metal,
+	-- sounds = mesecon.node_sound.metal,
+	sounds = nokore.node_sounds:build("metal"),
 	mesecons = {receptor = {
 		state = mesecon.state.off
 	}},
@@ -55,7 +56,8 @@ minetest.register_node("mesecons_hydroturbine:hydro_turbine_on", {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, 1.5, 0.5 },
 	},
-	sounds = mesecon.node_sound.metal,
+	-- sounds = mesecon.node_sound.metal,
+	sounds = nokore.node_sounds:build("metal"),
 	mesecons = {receptor = {
 		state = mesecon.state.on
 	}},

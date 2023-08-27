@@ -87,7 +87,8 @@ minetest.register_node("mesecons_detector:object_detector_off", {
 	}},
 	on_construct = object_detector_make_formspec,
 	on_receive_fields = object_detector_on_receive_fields,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	digiline = object_detector_digiline,
 	on_blast = mesecon.on_blastnode,
 })
@@ -105,7 +106,8 @@ minetest.register_node("mesecons_detector:object_detector_on", {
 	}},
 	on_construct = object_detector_make_formspec,
 	on_receive_fields = object_detector_on_receive_fields,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	digiline = object_detector_digiline,
 	on_blast = mesecon.on_blastnode,
 })
@@ -263,7 +265,8 @@ minetest.register_node("mesecons_detector:node_detector_off", {
 	}},
 	on_construct = node_detector_make_formspec,
 	on_receive_fields = node_detector_on_receive_fields,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	digiline = node_detector_digiline,
 	on_blast = mesecon.on_blastnode,
 })
@@ -281,7 +284,8 @@ minetest.register_node("mesecons_detector:node_detector_on", {
 	}},
 	on_construct = node_detector_make_formspec,
 	on_receive_fields = node_detector_on_receive_fields,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	digiline = node_detector_digiline,
 	on_blast = mesecon.on_blastnode,
 })

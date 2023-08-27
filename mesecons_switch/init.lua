@@ -6,7 +6,8 @@ mesecon.register_node("mesecons_switch:mesecon_switch", {
 	paramtype2="facedir",
 	description=S("Switch"),
 	is_ground_content = false,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	on_rightclick = function (pos, node)
 		if(mesecon.flipstate(pos, node) == "on") then
 			mesecon.receptor_on(pos)

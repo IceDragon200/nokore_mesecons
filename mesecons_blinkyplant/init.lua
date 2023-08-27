@@ -28,7 +28,8 @@ mesecon.register_node("mesecons_blinkyplant:blinky_plant", {
 	paramtype = "light",
 	is_ground_content = false,
 	walkable = false,
-	sounds = mesecon.node_sound.leaves,
+	-- sounds = mesecon.node_sound.leaves,
+	sounds = nokore.node_sounds:build("leaves"),
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, -0.5+0.7, 0.3},

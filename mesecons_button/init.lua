@@ -53,7 +53,8 @@ minetest.register_node("mesecons_button:button_off", {
 		minetest.sound_play("mesecons_button_push", { pos = pos }, true)
 		minetest.get_node_timer(pos):start(1)
 	end,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
 		rules = mesecon.rules.buttonlike_get
@@ -94,7 +95,8 @@ minetest.register_node("mesecons_button:button_on", {
 	groups = {dig_immediate=2, not_in_creative_inventory=1, mesecon_needs_receiver = 1},
 	drop = 'mesecons_button:button_off',
 	description = S("Button"),
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = mesecon.rules.buttonlike_get

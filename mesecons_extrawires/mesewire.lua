@@ -55,4 +55,3 @@ for i, v in pairs(powered_def.tiles) do
 	powered_def.tiles[i] = v .. "^[brighten"
 end
 
-minetest.register_node("mesecons_extrawires:mese_powered", powered_def)

@@ -17,7 +17,8 @@ mesecon.register_node("mesecons_solarpanel:solar_panel", {
 		wall_top    = {-7/16,  7/16, -7/16,  7/16,  8/16, 7/16},
 		wall_side   = {-8/16, -7/16, -7/16, -7/16,  7/16, 7/16},
 	},
-	sounds = mesecon.node_sound.glass,
+	-- sounds = mesecon.node_sound.glass,
+	sounds = nokore.node_sounds:build("glass"),
 	on_blast = mesecon.on_blastnode,
 },{
 	groups = {dig_immediate = 3},

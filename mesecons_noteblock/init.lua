@@ -14,7 +14,8 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 		mesecon.noteblock_play(pos, node.param2)
 		minetest.set_node(pos, node)
 	end,
-	sounds = mesecon.node_sound.wood,
+	-- sounds = mesecon.node_sound.wood,
+	sounds = nokore.node_sounds:build("wood"),
 	mesecons = {effector = { -- play sound when activated
 		action_on = function(pos, node)
 			mesecon.noteblock_play(pos, node.param2)

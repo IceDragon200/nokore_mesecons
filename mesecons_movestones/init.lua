@@ -131,7 +131,8 @@ mesecon.register_movestone("mesecons_movestones:movestone", {
 	},
 	groups = {cracky = 3},
     description = S("Movestone"),
-	sounds = mesecon.node_sound.stone
+	-- sounds = mesecon.node_sound.stone
+	sounds = nokore.node_sounds:build("stone")
 }, false, false)
 
 mesecon.register_movestone("mesecons_movestones:sticky_movestone", {
@@ -145,7 +146,8 @@ mesecon.register_movestone("mesecons_movestones:sticky_movestone", {
 	},
 	groups = {cracky = 3},
     description = S("Sticky Movestone"),
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 }, true, false)
 
 mesecon.register_movestone("mesecons_movestones:movestone_vertical", {
@@ -159,7 +161,8 @@ mesecon.register_movestone("mesecons_movestones:movestone_vertical", {
 	},
 	groups = {cracky = 3},
     description = S("Vertical Movestone"),
-	sounds = mesecon.node_sound.stone
+	-- sounds = mesecon.node_sound.stone
+	sounds = nokore.node_sounds:build("stone")
 }, false, true)
 
 mesecon.register_movestone("mesecons_movestones:sticky_movestone_vertical", {
@@ -173,7 +176,8 @@ mesecon.register_movestone("mesecons_movestones:sticky_movestone_vertical", {
 	},
 	groups = {cracky = 3},
     description = S("Vertical Sticky Movestone"),
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 }, true, true)
 
 

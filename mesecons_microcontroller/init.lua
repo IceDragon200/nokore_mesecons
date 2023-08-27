@@ -142,7 +142,8 @@ minetest.register_node(nodename, {
 		yc.reset (pos)
 		yc.update(pos)
 	end,
-	sounds = mesecon.node_sound.stone,
+	-- sounds = mesecon.node_sound.stone,
+	sounds = nokore.node_sounds:build("stone"),
 	mesecons = mesecons,
 	after_dig_node = function (pos, node)
 		rules = microc_rules[node.name]

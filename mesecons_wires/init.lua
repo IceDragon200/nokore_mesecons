@@ -220,7 +220,8 @@ local function register_wires()
 			walkable = false,
 			drop = "mesecons:wire_00000000_off",
 			mesecon_wire = true,
-			sounds = mesecon.node_sound.default,
+			-- sounds = mesecon.node_sound.default,
+			sounds = nokore.node_sounds:build("default"),
 			on_rotate = false,
 		}, {tiles = tiles_off, mesecons = meseconspec_off, groups = groups_off},
 		{tiles = tiles_on, mesecons = meseconspec_on, groups = groups_on})
