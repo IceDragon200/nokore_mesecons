@@ -136,4 +136,9 @@ local function global_cooldown(dtime)
 		end
 	end
 end
-minetest.register_globalstep(global_cooldown)
+
+if minetest.global_exists("nokore_proxy") then
+	nokore_proxy.register_globalstep("mesecons:global_cooldown", global_cooldown)
+else
+	minetest.register_globalstep(global_cooldown)
+end

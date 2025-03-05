@@ -72,43 +72,47 @@ end
 
 local function globalstep_func(dtime)
 	local actions = queue.actions
-	-- split into two categories:
-	-- actions_now: actions to execute now
-	-- queue.actions: actions to execute later
-	local actions_now = {}
-	queue.actions = {}
+	if next(actions) then
+		-- split into two categories:
+		-- actions_now: actions to execute now
+		-- queue.actions: actions to execute later
+		local actions_now = {}
+		queue.actions = {}
 
-	for _, ac in ipairs(actions) do
-		if ac.time > 0 then
-			-- action ac is to be executed later
-			-- ~> insert into queue.actions
-			ac.time = ac.time - dtime
-			table.insert(queue.actions, ac)
-		else
-			-- action ac is to be executed now
-			-- ~> insert into actions_now
-			table.insert(actions_now, ac)
+		for _, ac in ipairs(actions) do
+			if ac.time > 0 then
+				-- action ac is to be executed later
+				-- ~> insert into queue.actions
+				ac.time = ac.time - dtime
+				table.insert(queue.actions, ac)
+			else
+				-- action ac is to be executed now
+				-- ~> insert into actions_now
+				table.insert(actions_now, ac)
+			end
 		end
-	end
 
-	-- stable-sort the executed actions after their priority
-	-- some constructions might depend on the execution order, hence we first
-	-- execute the actions that had a lower index in actions_now
-	local old_action_order = {}
-	for i, ac in ipairs(actions_now) do
-		old_action_order[ac] = i
-	end
-	table.sort(actions_now, function(ac1, ac2)
-		if ac1.priority ~= ac2.priority then
-			return ac1.priority > ac2.priority
-		else
-			return old_action_order[ac1] < old_action_order[ac2]
+		if next(actions_now) then
+			-- stable-sort the executed actions after their priority
+			-- some constructions might depend on the execution order, hence we first
+			-- execute the actions that had a lower index in actions_now
+			local old_action_order = {}
+			for i, ac in ipairs(actions_now) do
+				old_action_order[ac] = i
+			end
+			table.sort(actions_now, function(ac1, ac2)
+				if ac1.priority ~= ac2.priority then
+					return ac1.priority > ac2.priority
+				else
+					return old_action_order[ac1] < old_action_order[ac2]
+				end
+			end)
+
+			-- execute highest priorities first, until all are executed
+			for _, ac in ipairs(actions_now) do
+				queue:execute(ac)
+			end
 		end
-	end)
-
-	-- execute highest priorities first, until all are executed
-	for _, ac in ipairs(actions_now) do
-		queue:execute(ac)
 	end
 end
 
@@ -118,16 +122,29 @@ do
 	local resumetime = mesecon.setting("resumetime", 4)
 	local globalstep_func_index = #minetest.registered_globalsteps + 1
 
-	minetest.register_globalstep(function(dtime)
-		m_time = m_time + dtime
-		-- don't even try if server has not been running for XY seconds; resumetime = time to wait
-		-- after starting the server before processing the ActionQueue, don't set this too low
-		if m_time < resumetime then
-			return
-		end
-		-- replace this globalstep function
-		minetest.registered_globalsteps[globalstep_func_index] = globalstep_func
-	end)
+	if minetest.global_exists("nokore_proxy") then
+		nokore_proxy.register_globalstep("mesecons:actionqueue", function (dtime)
+			m_time = m_time + dtime
+			-- don't even try if server has not been running for XY seconds; resumetime = time to wait
+			-- after starting the server before processing the ActionQueue, don't set this too low
+			if m_time < resumetime then
+				return
+			end
+			-- replace this globalstep function
+			nokore_proxy.replace_globalstep("mesecons:actionqueue", globalstep_func)
+		end)
+	else
+		minetest.register_globalstep(function (dtime)
+			m_time = m_time + dtime
+			-- don't even try if server has not been running for XY seconds; resumetime = time to wait
+			-- after starting the server before processing the ActionQueue, don't set this too low
+			if m_time < resumetime then
+				return
+			end
+			-- replace this globalstep function
+			minetest.registered_globalsteps[globalstep_func_index] = globalstep_func
+		end)
+	end
 end
 
 function queue:execute(action)
