@@ -47,21 +47,21 @@
 -- These functions return rules that have been rotated in the specific direction
 
 -- See fifo_queue.lua for documentation.
-mesecon.fifo_queue = dofile(minetest.get_modpath("mesecons").."/fifo_queue.lua")
+mesecon.fifo_queue = dofile(core.get_modpath("mesecons").."/fifo_queue.lua")
 
 -- General
 function mesecon.get_effector(nodename)
-	local def = minetest.registered_nodes[nodename]
+	local def = core.registered_nodes[nodename]
 	return def and def.mesecons and def.mesecons.effector
 end
 
 function mesecon.get_receptor(nodename)
-	local def = minetest.registered_nodes[nodename]
+	local def = core.registered_nodes[nodename]
 	return def and def.mesecons and def.mesecons.receptor
 end
 
 function mesecon.get_conductor(nodename)
-	local def = minetest.registered_nodes[nodename]
+	local def = core.registered_nodes[nodename]
 	return def and def.mesecons and def.mesecons.conductor
 end
 
@@ -372,11 +372,13 @@ local function find_light_update_conductors()
 
 	-- Find conductors whose lighting characteristics change depending on their state.
 	local checked = {}
-	for name, def in pairs(minetest.registered_nodes) do
-		local conductor = mesecon.get_conductor(name)
+	local conductor
+	local other_states
+	local other_def
+	for name, def in pairs(core.registered_nodes) do
+		conductor = mesecon.get_conductor(name)
 		if conductor and not checked[name] then
 			-- Find the other states of the conductor besides the current one.
-			local other_states
 			if conductor.onstate then
 				other_states = {conductor.onstate}
 			elseif conductor.offstate then
@@ -387,18 +389,20 @@ local function find_light_update_conductors()
 
 			-- Check the conductor. Other states are marked as checked.
 			for _, other_state in ipairs(other_states) do
-				local other_def = minetest.registered_nodes[other_state]
-				if (def.paramtype == "light") ~= (other_def.paramtype == "light")
-				or def.sunlight_propagates ~= other_def.sunlight_propagates
-				or def.light_source ~= other_def.light_source then
-					-- The light characteristics change depending on the state.
-					-- The states are added to the set.
-					light_update_conductors[name] = true
-					for _, other_state in ipairs(other_states) do
-						light_update_conductors[other_state] = true
-						checked[other_state] = true
+				other_def = core.registered_nodes[other_state]
+				if other_def then
+					if (def.paramtype == "light") ~= (other_def.paramtype == "light")
+						or def.sunlight_propagates ~= other_def.sunlight_propagates
+						or def.light_source ~= other_def.light_source then
+						-- The light characteristics change depending on the state.
+						-- The states are added to the set.
+						light_update_conductors[name] = true
+						for _, other_state in ipairs(other_states) do
+							light_update_conductors[other_state] = true
+							checked[other_state] = true
+						end
+						break
 					end
-					break
 				end
 				checked[other_state] = true
 			end
@@ -423,7 +427,7 @@ function mesecon.turnon(pos, link)
 
 		if not node then
 			-- Area does not exist; do nothing
-			pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+			pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 		elseif mesecon.is_conductor(node.name) then
 			local rules = mesecon.conductor_get_rules(node)
 
@@ -431,7 +435,7 @@ function mesecon.turnon(pos, link)
 				-- Call turnon on neighbors
 				for _, r in ipairs(mesecon.rule2meta(f.link, rules)) do
 					local np = vector.add(f.pos, r)
-					if not pos_can_be_skipped[minetest.hash_node_position(np)] then
+					if not pos_can_be_skipped[core.hash_node_position(np)] then
 						for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
 							frontiers:add({pos = np, link = l})
 						end
@@ -443,7 +447,7 @@ function mesecon.turnon(pos, link)
 
 			-- Only conductors with flat rules can be reliably skipped later
 			if not rules[1] or rules[1].x then
-				pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+				pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 			end
 		elseif mesecon.is_effector(node.name) then
 			mesecon.changesignal(f.pos, node, f.link, mesecon.state.on, depth)
@@ -451,7 +455,7 @@ function mesecon.turnon(pos, link)
 				mesecon.activate(f.pos, node, f.link, depth)
 			end
 		else
-			pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+			pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 		end
 		depth = depth + 1
 	end
@@ -487,7 +491,7 @@ function mesecon.turnoff(pos, link)
 
 		if not node then
 			-- Area does not exist; do nothing
-			pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+			pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 		elseif mesecon.is_conductor(node.name) then
 			local rules = mesecon.conductor_get_rules(node)
 
@@ -495,7 +499,7 @@ function mesecon.turnoff(pos, link)
 				for _, r in ipairs(mesecon.rule2meta(f.link, rules)) do
 					local np = vector.add(f.pos, r)
 
-					if not pos_can_be_skipped[minetest.hash_node_position(np)] then
+					if not pos_can_be_skipped[core.hash_node_position(np)] then
 						-- Check if an onstate receptor is connected. If that is the case,
 						-- abort this turnoff process by returning false. `receptor_off` will
 						-- discard all the changes that we made in the voxelmanip:
@@ -517,7 +521,7 @@ function mesecon.turnoff(pos, link)
 
 			-- Only conductors with flat rules can be reliably skipped later
 			if not rules[1] or rules[1].x then
-				pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+				pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 			end
 		elseif mesecon.is_effector(node.name) then
 			table.insert(signals, {
@@ -527,7 +531,7 @@ function mesecon.turnoff(pos, link)
 				depth = depth
 			})
 		else
-			pos_can_be_skipped[minetest.hash_node_position(f.pos)] = true
+			pos_can_be_skipped[core.hash_node_position(f.pos)] = true
 		end
 		depth = depth + 1
 	end
